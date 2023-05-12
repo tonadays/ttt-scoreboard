@@ -1,7 +1,12 @@
-TTT - Easy Scoreboard
-==============
+# ttt-scoreboard
 
-pls help scoreboard
---------------
+Fork of [rejax/TTT-EasyScoreboard](https://github.com/rejax/TTT-EasyScoreboard)
 
-**read inside ttt_easyscoreboard for the config explanation**
+Presently has no changes
+
+## Planned
+
+- Release workflow
+- Fix column alignment issues?
+- Lib methods for other addons to use?
+- Sortable columns, like the default ttt columns are
