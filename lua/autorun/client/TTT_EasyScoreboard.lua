@@ -8,24 +8,35 @@ EZS.Enabled = true
 -- for a full list of silkicons, go to http://www.famfamfam.com/lab/icons/silk/previews/index_abc.png
 
 --EZS.Ranks["rank OR steamid"] = { name = "displayname", color = RankColor, namecolor = (optional), admin = are they admin? (true/false) }
-EZS.Ranks["superadmin"] = { name = "S. Admin", color = Color(255, 0, 0), namecolor = Color(0, 255, 0), admin = true }
-EZS.Ranks["admin"] = { name = "Admin", color = Color(150, 100, 100), admin = true }
-EZS.Ranks["donator"] = { name = "Donator", color = Color(100, 200, 100), admin = false }
+-- EZS.Ranks["superadmin"] = { name = "S. Admin", color = Color(255, 0, 0), namecolor = Color(0, 255, 0), admin = true }
+-- EZS.Ranks["admin"] = { name = "Admin", color = Color(150, 100, 100), admin = true }
+-- EZS.Ranks["donator"] = { name = "Donator", color = Color(100, 200, 100), admin = false }
+
+-- EZS.Ranks["dev"] = { name = "Dev", color = Color( 158, 144, 233 ), namecolor = Color( 158, 144, 233 ), admin = true,  icon = "wrench" }
+-- EZS.Ranks["superdev"] = { name = "Dev", color = Color( 158, 144, 233 ), namecolor = Color( 158, 144, 233 ), admin = true,  icon = "application_xp_terminal" }
+-- EZS.Ranks["superadmin"] = { name = "World", color = Color( 255, 100, 100 ), namecolor = Color( 0, 255, 0 ), admin = true, icon = "world" }
+-- EZS.Ranks["admin"] = { name = "Admin", color = Color( 255, 100, 100 ), namecolor = Color( 0, 255, 0 ), admin = true, icon = "shield" }
+-- EZS.Ranks["mod"] = { name = "Mod", color = Color( 255, 167, 89 ), admin = true, icon = "shield" }
+
+EZS.Ranks["superadmin"] = { name = " ", color = Color(255, 100, 100), namecolor = Color(0, 255, 0), admin = true, icon =
+"shield" }
+EZS.Ranks["admin"] = { name = " ", color = Color(255, 100, 100), namecolor = Color(0, 255, 0), admin = true, icon =
+"shield" }
 
 -- it would be nice if you left this in :)
-EZS.Ranks["STEAM_0:1:45852799"] = { namecolor = "rainbow", icon = "bug", admin = false }
+-- EZS.Ranks["STEAM_0:1:45852799"] = { namecolor = "rainbow", icon = "bug", admin = false }
 
 -- label enable on the top? what should it say?
-EZS.CreateRankLabel = { enabled = true, text = "Rank" }
+EZS.CreateRankLabel = { enabled = false, text = " " }
 
 -- what to show when the player doesnt have an entry
-EZS.DefaultLabel = ""
+EZS.DefaultLabel = " "
 
 -- sadly there is no way to shift the background bar over as TTT draws it manually :c
 EZS.HideBackground = false
 
 -- Width of the rank columns
-EZS.ColumnWidth = 64
+EZS.ColumnWidth = 50
 
 -- the number of columns (not pixels!!!!!!!) to shift to the left
 EZS.ShiftLeft = 0
@@ -37,7 +48,7 @@ EZS.ShiftOthers = 200
 EZS.ShowIconsWithRanks = true
 
 -- Fix the icon next to the rank? (Horizontal align)
-EZS.FixedIcon = true
+EZS.FixedIcon = false
 
 -- Should the icon shift to the left to accomodate the label?
 EZS.ShiftIconsWithLabels = false
@@ -46,7 +57,7 @@ EZS.ShiftIconsWithLabels = false
 EZS.ShiftIconsLeft = 0
 
 -- How far left should we shift the icon RELATIVE to the rank text?
-EZS.ShiftRankIcon = 0
+EZS.ShiftRankIcon = 6
 
 -- should we color the names?
 EZS.UseNameColors = true
