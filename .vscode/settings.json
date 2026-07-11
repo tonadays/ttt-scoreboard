@@ -13,5 +13,8 @@
     "Lua.diagnostics.disable": [
         "duplicate-set-field"
     ],
+    "Lua.diagnostics.globals": [
+        "SB_ROW_HEIGHT"
+    ],
     "Lua.workspace.checkThirdParty": false
 }

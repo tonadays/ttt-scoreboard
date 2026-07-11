@@ -36,6 +36,7 @@ TTSB.Ranks["mod"] = {
     icon = "shield"
 }
 
+-- original TTT-EasyScoreboard developer
 -- it would be nice if you left this in :)
 TTSB.Ranks["STEAM_0:1:45852799"] = { namecolor = "rainbow", icon = "bug", admin = false }
 
@@ -226,6 +227,10 @@ TTSB.RightClickFunction = {
 
 hook.Run("TTSB_AddRightClickFunction", TTSB.RightClickFunction.functions)
 
+function IsKarmaEnabled()
+    return GetConVar("ttt_karma"):GetBool()
+end
+
 for id, rank in pairs(TTSB.Ranks) do
     if rank.icon then
         rank.iconmat = Material(("icon16/%s.png"):format(rank.icon))
@@ -257,7 +262,7 @@ function TTSB.HandleShift(sb)
         if not p then return end
 
         local shift = TTSB.HideBackground and 1 or 0
-        local karma = KARMA.IsEnabled() and 0 or 1
+        local karma = IsKarmaEnabled() and 0 or 1
         local left = (5 - karma) - TTSB.ShiftLeft
         local posx, posy = p:GetPos()
         local mod = (50 * ((left + shift) - #parent.cols))
@@ -339,7 +344,7 @@ function TTSB.AddRankLabel(sb)
         end
     end
 
-    if TTSB.HideBackground and KARMA.IsEnabled() then -- ttt pls
+    if TTSB.HideBackground and IsKarmaEnabled() then -- ttt pls
         TTSB.AddSpacer()
     end
 
