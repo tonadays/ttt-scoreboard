@@ -7,21 +7,41 @@ EZS.Enabled = true
 -- you can set a silkicon to be used, by adding a "icon" field. for example: icon = "heart" will be drawn as "icon16/heart.png"
 -- for a full list of silkicons, go to http://www.famfamfam.com/lab/icons/silk/previews/index_abc.png
 
---EZS.Ranks["rank OR steamid"] = { name = "displayname", color = RankColor, namecolor = (optional), admin = are they admin? (true/false) }
+-- EZS.Ranks["rank OR steamid"] = { name = "displayname", color = RankColor, namecolor = (optional), admin = are they admin? (true/false) }
 -- EZS.Ranks["superadmin"] = { name = "S. Admin", color = Color(255, 0, 0), namecolor = Color(0, 255, 0), admin = true }
 -- EZS.Ranks["admin"] = { name = "Admin", color = Color(150, 100, 100), admin = true }
 -- EZS.Ranks["donator"] = { name = "Donator", color = Color(100, 200, 100), admin = false }
 
--- EZS.Ranks["dev"] = { name = "Dev", color = Color( 158, 144, 233 ), namecolor = Color( 158, 144, 233 ), admin = true,  icon = "wrench" }
--- EZS.Ranks["superdev"] = { name = "Dev", color = Color( 158, 144, 233 ), namecolor = Color( 158, 144, 233 ), admin = true,  icon = "application_xp_terminal" }
--- EZS.Ranks["superadmin"] = { name = "World", color = Color( 255, 100, 100 ), namecolor = Color( 0, 255, 0 ), admin = true, icon = "world" }
--- EZS.Ranks["admin"] = { name = "Admin", color = Color( 255, 100, 100 ), namecolor = Color( 0, 255, 0 ), admin = true, icon = "shield" }
--- EZS.Ranks["mod"] = { name = "Mod", color = Color( 255, 167, 89 ), admin = true, icon = "shield" }
+EZS.Ranks["dev"] = {
+    name = " ",
+    color = Color(158, 144, 233),
+    namecolor = Color(158, 144, 233),
+    admin = true,
+    icon = "wrench"
+}
 
-EZS.Ranks["superadmin"] = { name = " ", color = Color(255, 100, 100), namecolor = Color(0, 255, 0), admin = true, icon =
-"shield" }
-EZS.Ranks["admin"] = { name = " ", color = Color(255, 100, 100), namecolor = Color(0, 255, 0), admin = true, icon =
-"shield" }
+EZS.Ranks["superadmin"] = {
+    name = " ",
+    color = Color(255, 100, 100),
+    namecolor = Color(0, 255, 0),
+    admin = true,
+    icon = "shield"
+}
+
+EZS.Ranks["admin"] = {
+    name = " ",
+    color = Color(255, 100, 100),
+    namecolor = Color(0, 255, 0),
+    admin = true,
+    icon = "shield"
+}
+
+EZS.Ranks["mod"] = {
+    name = " ",
+    color = Color(255, 167, 89),
+    admin = true,
+    icon = "shield"
+}
 
 -- it would be nice if you left this in :)
 -- EZS.Ranks["STEAM_0:1:45852799"] = { namecolor = "rainbow", icon = "bug", admin = false }
