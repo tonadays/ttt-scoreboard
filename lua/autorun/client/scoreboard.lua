@@ -295,7 +295,7 @@ function EZS.AddRankLabel(sb)
 
         if rank.icon and not rank.iconmat:IsError() and not EZS.FixedIcon then
             label.Paint = function(s, w, h)
-                surface.DisableClipping(true)
+                DisableClipping(true)
                 surface.SetDrawColor(color_white)
                 surface.SetMaterial(rank.iconmat)
 
@@ -310,7 +310,7 @@ function EZS.AddRankLabel(sb)
                 end
 
                 surface.DrawTexturedRect(posx, -1, rank.iconmat:Width(), rank.iconmat:Height())
-                surface.DisableClipping(false)
+                DisableClipping(false)
             end
 
             if not rank.name then return " " end
@@ -344,14 +344,14 @@ function EZS.AddRankLabel(sb)
 
             if rank.icon and not rank.iconmat:IsError() then
                 label.Paint = function(s, w, h)
-                    surface.DisableClipping(true)
+                    DisableClipping(true)
                     surface.SetDrawColor(color_white)
                     surface.SetMaterial(rank.iconmat)
 
                     local posx = (rank.iconmat:Width() / 2) + EZS.ColumnWidth / 4
 
                     surface.DrawTexturedRect(posx, -1, rank.iconmat:Width(), rank.iconmat:Height())
-                    surface.DisableClipping(false)
+                    DisableClipping(false)
                 end
             end
 
