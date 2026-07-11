@@ -132,6 +132,7 @@ EZS.RightClickFunction = {
                     func = function(ply)
                         RunConsoleCommand("ulx", "fspec", ply:Nick():gsub(";", ""))
                     end,
+                    icon = "icon16/status_away.png"
                 },
                 ["Unspec"] = {
                     func = function(ply)
@@ -148,6 +149,11 @@ EZS.RightClickFunction = {
                     end,
                     icon = "icon16/disconnect.png"
                 },
+                -- ["Ban"] = {
+                --     func = function(ply)
+                --         RunConsoleCommand("ulx", "ban", ply:Nick():gsub(";", ""))
+                --     end,
+                --     icon = "icon16/delete.png"
                 -- },
                 ["Slay"] = {
                     func = function(ply)
@@ -156,6 +162,10 @@ EZS.RightClickFunction = {
                     icon = "icon16/bomb.png"
                 },
                 ["Respawn"] = {
+                    func = function(ply)
+                        RunConsoleCommand("ulx", "respawn", ply:Nick():gsub(";", ""))
+                    end,
+                    icon = "icon16/group_add.png"
                 },
                 ["Respawn TP"] = {
                     func = function(ply)
@@ -178,8 +188,6 @@ EZS.RightClickFunction = {
                     end,
                     icon = "icon16/keyboard_add.png"
                 },
-
-            {
                 ["Gag"] = {
                     func = function(ply)
                         RunConsoleCommand("ulx", "gag", ply:Nick():gsub(";", ""))
@@ -195,6 +203,13 @@ EZS.RightClickFunction = {
             },
 
             -- {
+            --     ["Goto"] = {
+            --         func = function(ply)
+            --             RunConsoleCommand("ulx", "goto", ply:Nick():gsub(";", ""))
+            --         end,
+            --         icon = "icon16/arrow_right.png"
+            --     },
+            --     ["Bring"] = {
             --         func = function(ply)
             --             RunConsoleCommand("ulx", "bring", ply:Nick():gsub(";", ""))
             --         end,
@@ -203,6 +218,7 @@ EZS.RightClickFunction = {
             -- },
 
             {
+                ["Print Friends"] = {
                     func = function(ply)
                         RunConsoleCommand("ulx", "friends", ply:Nick():gsub(";", ""))
                     end,
