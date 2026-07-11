@@ -100,33 +100,68 @@ end
 
 EZS.RightClickFunction = {
     enabled = true,
-    ask_admins = true,
+    ask_admins = false,
     functions = {
-        ["User Functions"] = {
-            ["Show Profile"] = function(ply)
-                ply:ShowProfile()
-            end,
-            ["Copy SteamID"] = function(ply)
-                SetClipboardText(ply:SteamID())
-                chat.AddText(color_white, ply:Nick() .. "'s SteamID (", Color(200, 200, 200), ply:SteamID(), color_white,
-                    ") copied to clipboard!")
-            end,
-
-            _icon = "icon16/group.png",
+        ["User Menu"] = {
+            ["Show Profile"] = {
+                func = function(ply)
+                    ply:ShowProfile()
+                end,
+                icon = "icon16/vcard.png"
+            },
+            ["Report Player"] = {
+                func = function(ply)
+                    LocalPlayer():ConCommand('say "!report ' .. ply:Nick():gsub(";", ""):gsub('"', "") .. '"')
+                end,
+                icon = "icon16/report.png"
+            },
+            ["Copy SteamID"] = {
+                func = function(ply)
+                    SetClipboardText(ply:SteamID())
+                    chat.AddText(color_white, ply:Nick() .. "'s SteamID (", Color(200, 200, 200), ply:SteamID(),
+                        color_white,
+                        ") copied to clipboard!")
+                end,
+                icon = "icon16/tag.png"
+            },
+            _icon = "icon16/user.png",
         },
-        ["Admin Functions"] = {
+        ["Admin Menu"] = {
+            {
+                ["Force Spec"] = {
+                    func = function(ply)
+                        RunConsoleCommand("ulx", "fspec", ply:Nick():gsub(";", ""))
+                    end,
+                },
+                ["Unspec"] = {
+                    func = function(ply)
+                        RunConsoleCommand("ulx", "unspec", ply:Nick():gsub(";", ""))
+                    end,
+                    icon = "icon16/status_online.png"
+                },
+            },
+
             {
                 ["Kick"] = {
                     func = function(ply)
                         RunConsoleCommand("ulx", "kick", ply:Nick():gsub(";", ""))
                     end,
-                    icon = "icon16/user_delete.png"
+                    icon = "icon16/disconnect.png"
                 },
+                -- },
                 ["Slay"] = {
                     func = function(ply)
                         RunConsoleCommand("ulx", "slay", ply:Nick():gsub(";", ""))
                     end,
-                    icon = "icon16/pill.png"
+                    icon = "icon16/bomb.png"
+                },
+                ["Respawn"] = {
+                },
+                ["Respawn TP"] = {
+                    func = function(ply)
+                        RunConsoleCommand("ulx", "respawntp", ply:Nick():gsub(";", ""))
+                    end,
+                    icon = "icon16/group_link.png"
                 },
             },
 
@@ -143,7 +178,6 @@ EZS.RightClickFunction = {
                     end,
                     icon = "icon16/keyboard_add.png"
                 },
-            },
 
             {
                 ["Gag"] = {
@@ -160,18 +194,19 @@ EZS.RightClickFunction = {
                 },
             },
 
+            -- {
+            --         func = function(ply)
+            --             RunConsoleCommand("ulx", "bring", ply:Nick():gsub(";", ""))
+            --         end,
+            --         icon = "icon16/arrow_left.png"
+            --     },
+            -- },
+
             {
-                ["Goto"] = {
                     func = function(ply)
-                        RunConsoleCommand("ulx", "goto", ply:Nick():gsub(";", ""))
+                        RunConsoleCommand("ulx", "friends", ply:Nick():gsub(";", ""))
                     end,
-                    icon = "icon16/arrow_right.png"
-                },
-                ["Bring"] = {
-                    func = function(ply)
-                        RunConsoleCommand("ulx", "bring", ply:Nick():gsub(";", ""))
-                    end,
-                    icon = "icon16/arrow_left.png"
+                    icon = "icon16/group.png"
                 },
             },
 
@@ -411,7 +446,7 @@ function EZS.AddMenu(menu)
     local ply = menu.Player
 
     for permission, funcs in pairs(RCF.functions) do
-        if permission == "Admin Functions" then
+        if permission == "Admin Menu" then
             if not rank then continue end
             if not rank.admin then continue end
         end
