@@ -2,4 +2,4 @@
 
 ranks and right click menu for the ttt scoreboard, forked from [rejax/TTT-EasyScoreboard](https://github.com/rejax/TTT-EasyScoreboard)
 
-this addon was specifically customized for our ttt server, and may not work correctly on other servers
+this addon was specifically customized for our server, and may not work correctly on other servers
