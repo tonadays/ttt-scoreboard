@@ -41,7 +41,7 @@ TTSB.Ranks["mod"] = {
 TTSB.Ranks["STEAM_0:1:45852799"] = { namecolor = "rainbow", icon = "bug", admin = false }
 
 -- label enable on the top? what should it say?
-TTSB.CreateRankLabel = { enabled = false, text = " " }
+TTSB.CreateRankLabel = { enabled = true, text = "Rank" }
 
 -- what to show when the player doesnt have an entry
 TTSB.DefaultLabel = " "
