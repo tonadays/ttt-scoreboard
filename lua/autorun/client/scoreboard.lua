@@ -95,137 +95,174 @@ end
 TTSB.RightClickFunction = {
     enabled = true,
     ask_admins = false,
-    functions = {
-        ["User Menu"] = {
-            ["Show Profile"] = {
-                func = function(ply)
-                    ply:ShowProfile()
-                end,
-                icon = "icon16/vcard.png"
-            },
-            ["Report Player"] = {
-                func = function(ply)
-                    LocalPlayer():ConCommand('say "!report ' .. ply:Nick():gsub(";", ""):gsub('"', "") .. '"')
-                end,
-                icon = "icon16/report.png"
-            },
-            ["Copy SteamID"] = {
-                func = function(ply)
-                    SetClipboardText(ply:SteamID())
-                    chat.AddText(color_white, ply:Nick() .. "'s SteamID (", Color(200, 200, 200), ply:SteamID(),
-                        color_white,
-                        ") copied to clipboard!")
-                end,
-                icon = "icon16/tag.png"
-            },
-            _icon = "icon16/user.png",
+    groups = {
+        {
+            functions = {
+                {
+                    name = "Show Profile",
+                    func = function(ply)
+                        ply:ShowProfile()
+                    end,
+                    icon = "icon16/vcard.png"
+                },
+                {
+                    name = "Report Player",
+                    func = function(ply)
+                        LocalPlayer():ConCommand('say "!report ' .. ply:Nick():gsub(";", ""):gsub('"', "") .. '"')
+                    end,
+                    icon = "icon16/report.png"
+                },
+                {
+                    admin = true,
+                    name = "Print Friends",
+                    icon = "icon16/group.png",
+                    func = function(ply)
+                        RunConsoleCommand("ulx", "friends", ply:Nick():gsub(";", ""))
+                    end,
+                },
+                {
+                    name = "Copy SteamID",
+                    icon = "icon16/tag.png",
+                    func = function(ply)
+                        SetClipboardText(ply:SteamID())
+                        chat.AddText(color_white, ply:Nick() .. "'s SteamID (", Color(200, 200, 200), ply:SteamID(),
+                            color_white,
+                            ") copied to clipboard!")
+                    end,
+                },
+                {
+                    name = "Copy SteamID64",
+                    icon = "icon16/tag.png",
+                    func = function(ply)
+                        SetClipboardText(ply:SteamID64())
+                        chat.AddText(color_white, "Copied " .. ply:Nick() .. "'s SteamID64 (", Color(200, 200, 200),
+                            ply:SteamID64(), color_white, ") to clipboard!")
+                    end,
+                },
+            }
         },
-        ["Admin Menu"] = {
-            {
-                ["Force Spec"] = {
+        {
+            admin = true,
+            functions = {
+                {
+                    name = "Force Spec",
+                    icon = "icon16/status_away.png",
                     func = function(ply)
                         RunConsoleCommand("ulx", "fspec", ply:Nick():gsub(";", ""))
                     end,
-                    icon = "icon16/status_away.png"
                 },
-                ["Unspec"] = {
+                {
+                    name = "Unspec",
+                    icon = "icon16/status_online.png",
                     func = function(ply)
                         RunConsoleCommand("ulx", "unspec", ply:Nick():gsub(";", ""))
                     end,
-                    icon = "icon16/status_online.png"
                 },
-            },
-
-            {
-                ["Kick"] = {
-                    func = function(ply)
-                        RunConsoleCommand("ulx", "kick", ply:Nick():gsub(";", ""))
-                    end,
-                    icon = "icon16/disconnect.png"
-                },
-                -- ["Ban"] = {
+            }
+        },
+        {
+            admin = true,
+            functions = {
+                -- These are commented out for now because I want them to prompt the admin to set a reason
+                -- {
+                --     name = "Kick",
+                --     icon = "icon16/disconnect.png",
+                --     func = function(ply)
+                --         RunConsoleCommand("ulx", "kick", ply:Nick():gsub(";", ""))
+                --     end,
+                -- },
+                -- {
+                --     name = "Ban",
                 --     func = function(ply)
                 --         RunConsoleCommand("ulx", "ban", ply:Nick():gsub(";", ""))
                 --     end,
                 --     icon = "icon16/delete.png"
                 -- },
-                ["Slay"] = {
+                {
+                    name = "Slay",
+                    icon = "icon16/bomb.png",
                     func = function(ply)
+                        -- Don't need a ply:Alive() check here because the command handles that
                         RunConsoleCommand("ulx", "slay", ply:Nick():gsub(";", ""))
                     end,
-                    icon = "icon16/bomb.png"
                 },
-                ["Respawn"] = {
+                {
+                    name = "Respawn",
+                    icon = "icon16/group_add.png",
                     func = function(ply)
+                        -- Don't need a ply:Alive() check here because the command handles that
                         RunConsoleCommand("ulx", "respawn", ply:Nick():gsub(";", ""))
                     end,
-                    icon = "icon16/group_add.png"
                 },
-                ["Respawn TP"] = {
-                    func = function(ply)
-                        RunConsoleCommand("ulx", "respawntp", ply:Nick():gsub(";", ""))
-                    end,
-                    icon = "icon16/group_link.png"
-                },
-            },
-
-            {
-                ["Mute"] = {
+                -- {
+                --     name = "Respawn TP",
+                --     icon = "icon16/group_link.png",
+                --     func = function(ply)
+                --         RunConsoleCommand("ulx", "respawntp", ply:Nick():gsub(";", ""))
+                --     end,
+                -- },
+            }
+        },
+        {
+            admin = true,
+            functions = {
+                {
+                    name = "Mute",
+                    icon = "icon16/keyboard_delete.png",
                     func = function(ply)
                         RunConsoleCommand("ulx", "mute", ply:Nick():gsub(";", ""))
                     end,
-                    icon = "icon16/keyboard_delete.png"
                 },
-                ["Un-Mute"] = {
+                {
+                    name = "Un-Mute",
+                    icon = "icon16/keyboard_add.png",
                     func = function(ply)
                         RunConsoleCommand("ulx", "unmute", ply:Nick():gsub(";", ""))
                     end,
-                    icon = "icon16/keyboard_add.png"
                 },
-                ["Gag"] = {
+                {
+                    name = "Gag",
+                    icon = "icon16/sound_mute.png",
                     func = function(ply)
                         RunConsoleCommand("ulx", "gag", ply:Nick():gsub(";", ""))
                     end,
-                    icon = "icon16/sound_mute.png"
                 },
-                ["Un-Gag"] = {
+                {
+                    name = "Un-Gag",
+                    icon = "icon16/sound.png",
                     func = function(ply)
                         RunConsoleCommand("ulx", "ungag", ply:Nick():gsub(";", ""))
                     end,
-                    icon = "icon16/sound.png"
                 },
-            },
-
-            -- {
-            --     ["Goto"] = {
-            --         func = function(ply)
-            --             RunConsoleCommand("ulx", "goto", ply:Nick():gsub(";", ""))
-            --         end,
-            --         icon = "icon16/arrow_right.png"
-            --     },
-            --     ["Bring"] = {
-            --         func = function(ply)
-            --             RunConsoleCommand("ulx", "bring", ply:Nick():gsub(";", ""))
-            --         end,
-            --         icon = "icon16/arrow_left.png"
-            --     },
-            -- },
-
-            {
-                ["Print Friends"] = {
+            }
+        },
+        {
+            admin = true,
+            functions = {
+                {
+                    name = "Goto",
+                    icon = "icon16/arrow_right.png",
                     func = function(ply)
-                        RunConsoleCommand("ulx", "friends", ply:Nick():gsub(";", ""))
+                        RunConsoleCommand("ulx", "goto", ply:Nick():gsub(";", ""))
                     end,
-                    icon = "icon16/group.png"
                 },
-            },
-
-            _icon = "icon16/shield.png",
-        }
+                {
+                    name = "Bring",
+                    icon = "icon16/arrow_left.png",
+                    func = function(ply)
+                        RunConsoleCommand("ulx", "bring", ply:Nick():gsub(";", ""))
+                    end,
+                },
+            }
+        },
+        -- {
+        --     admin = true,
+        --     functions = {}
+        -- },
     }
 }
 
-hook.Run("TTSB_AddRightClickFunction", TTSB.RightClickFunction.functions)
+hook.Run("TTSB_AddRightClickFunction", TTSB.RightClickFunction.groups)
 
 function IsKarmaEnabled()
     return GetConVar("ttt_karma"):GetBool()
@@ -452,79 +489,79 @@ end
 
 hook.Add("TTTScoreboardColorForPlayer", "TTSB_NameColors", TTSB.AddNameColor)
 
-function TTSB.AddMenu(menu)
-    local RCF = TTSB.RightClickFunction
-    if not RCF.enabled then return nil end
+-- function TTSB.AddMenu(menu)
+--     local RCF = TTSB.RightClickFunction
+--     if not RCF.enabled then return nil end
 
-    local rank = TTSB.GetRank(LocalPlayer())
-    local ply = menu.Player
+--     local rank = TTSB.GetRank(LocalPlayer())
+--     local ply = menu.Player
 
-    for permission, funcs in pairs(RCF.functions) do
-        if permission == "Admin Menu" then
-            if not rank then continue end
-            if not rank.admin then continue end
-        end
+--     for permission, funcs in pairs(RCF.functions) do
+--         if permission == "Admin Menu" then
+--             if not rank then continue end
+--             if not rank.admin then continue end
+--         end
 
-        menu:AddSpacer()
-        local perm = menu:AddOption(permission)
-        perm.OnMousePressed = function() end
-        perm.OnMouseReleased = function() end
-        menu:AddSpacer()
+--         menu:AddSpacer()
+--         local perm = menu:AddOption(permission)
+--         perm.OnMousePressed = function() end
+--         perm.OnMouseReleased = function() end
+--         menu:AddSpacer()
 
-        for name, f in pairs(funcs) do
-            if name == "_icon" then
-                perm:SetIcon(f)
-                continue
-            end
+--         for name, f in pairs(funcs) do
+--             if name == "_icon" then
+--                 perm:SetIcon(f)
+--                 continue
+--             end
 
-            if istable(f) then
-                if f.func then
-                    if istable(f.allowed) and not table.HasValue(f.allowed, LocalPlayer():GetUserGroup()) then continue end
-                    local option = menu:AddOption(name)
-                    option.DoClick = function()
-                        if not IsValid(ply) then return end
-                        if RCF.ask_admins then
-                            Derma_Query("Execute '" .. name .. "' on player " .. ply:Nick() .. "?", "Admin Command",
-                                "Yes", function() f.func(ply) end,
-                                "No", function() end)
-                        else
-                            f.func(ply)
-                        end
-                    end
-                    option:SetIcon(f.icon)
-                else
-                    for n, d in pairs(f) do
-                        if istable(d.allowed) and not table.HasValue(d.allowed, LocalPlayer():GetUserGroup()) then continue end
+--             if istable(f) then
+--                 if f.func then
+--                     if istable(f.allowed) and not table.HasValue(f.allowed, LocalPlayer():GetUserGroup()) then continue end
+--                     local option = menu:AddOption(name)
+--                     option.DoClick = function()
+--                         if not IsValid(ply) then return end
+--                         if RCF.ask_admins then
+--                             Derma_Query("Execute '" .. name .. "' on player " .. ply:Nick() .. "?", "Admin Command",
+--                                 "Yes", function() f.func(ply) end,
+--                                 "No", function() end)
+--                         else
+--                             f.func(ply)
+--                         end
+--                     end
+--                     option:SetIcon(f.icon)
+--                 else
+--                     for n, d in pairs(f) do
+--                         if istable(d.allowed) and not table.HasValue(d.allowed, LocalPlayer():GetUserGroup()) then continue end
 
-                        local option = menu:AddOption(n)
-                        option.DoClick = function()
-                            if not IsValid(ply) then return end
-                            if RCF.ask_admins then
-                                Derma_Query("Execute '" .. n .. "' on player " .. ply:Nick() .. "?", "Admin Command",
-                                    "Yes", function() d.func(ply) end,
-                                    "No", function() end)
-                            else
-                                d.func(ply)
-                            end
-                        end
-                        option:SetIcon(d.icon)
-                    end
-                    menu:AddSpacer()
-                end
-            else
-                menu:AddOption(name).DoClick = function() f(ply) end
-            end
-        end
-    end
+--                         local option = menu:AddOption(n)
+--                         option.DoClick = function()
+--                             if not IsValid(ply) then return end
+--                             if RCF.ask_admins then
+--                                 Derma_Query("Execute '" .. n .. "' on player " .. ply:Nick() .. "?", "Admin Command",
+--                                     "Yes", function() d.func(ply) end,
+--                                     "No", function() end)
+--                             else
+--                                 d.func(ply)
+--                             end
+--                         end
+--                         option:SetIcon(d.icon)
+--                     end
+--                     menu:AddSpacer()
+--                 end
+--             else
+--                 menu:AddOption(name).DoClick = function() f(ply) end
+--             end
+--         end
+--     end
 
-    hook.Add("Think", "TTSB_CheckInput", function()
-        if not input.IsKeyDown(KEY_TAB) then
-            hook.Remove("Think", "TTSB_CheckInput")
-            menu:Remove()
-        end
-    end)
-end
+--     hook.Add("Think", "TTSB_CheckInput", function()
+--         if not input.IsKeyDown(KEY_TAB) then
+--             hook.Remove("Think", "TTSB_CheckInput")
+--             menu:Remove()
+--         end
+--     end)
+-- end
 
-hook.Add("TTTScoreboardMenu", "TTSB_Menu", TTSB.AddMenu)
+-- hook.Add("TTTScoreboardMenu", "TTSB_Menu", TTSB.AddMenu)
 
 concommand.Add("ttsb_refreshscoreboard", function() gamemode.Call("ScoreboardCreate") end)
