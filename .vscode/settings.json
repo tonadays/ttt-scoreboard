@@ -11,10 +11,12 @@
         "continue"
     ],
     "Lua.diagnostics.disable": [
-        "duplicate-set-field"
+        "duplicate-set-field",
+        "unused-local"
     ],
     "Lua.diagnostics.globals": [
-        "SB_ROW_HEIGHT"
+        "SB_ROW_HEIGHT",
+        "ULib"
     ],
     "Lua.workspace.checkThirdParty": false
 }
