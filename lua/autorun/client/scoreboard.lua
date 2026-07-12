@@ -315,7 +315,7 @@ TTSB.RightClickFunction = {
 
 hook.Run("TTSB_AddRightClickFunction", TTSB.RightClickFunction.groups)
 
-function IsKarmaEnabled()
+local function IsKarmaEnabled()
     return GetConVar("ttt_karma"):GetBool()
 end
 
