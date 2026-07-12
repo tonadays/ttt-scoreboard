@@ -110,19 +110,20 @@ local function Target(ply)
 end
 
 ---@class TTSB.RightClickOption
----@field name string
----@field icon string
+---@field name? string
+---@field icon? string
 ---@field admin? boolean if present, a player's TTSB rank must be specified as an admin rank
----@field allowedGroups? table<string, boolean> if present, a player's ulx group must be set to true in this table
+---@field allowedGroups? table<string, boolean> if present, a player's ULX group must be set to true in this table
 ---@field command? string if present, the player's permission will be checked with against this string using ULib.ucl.query()
+---@field prompt? boolean if present, prompts the user for confirmation when clicking this option
 ---@field func fun(ply: Player)
 
 ---@class TTSB.RightClickGroup
 ---@field admin? boolean if present, a player's TTSB rank must be specified as an admin rank
----@field allowedGroups? table<string, boolean> if present, a player's ulx group must be set to true in this table
+---@field allowedGroups? table<string, boolean> if present, a player's ULX group must be set to true in this table
 ---@field options TTSB.RightClickOption[]
 
----@type { enabled: boolean, ask_admins: boolean, groups: TTSB.RightClickGroup[] }
+---@type { enabled: boolean, groups: TTSB.RightClickGroup[] }
 TTSB.RightClickFunction = {
     enabled = true,
     ask_admins = false,
@@ -200,6 +201,7 @@ TTSB.RightClickFunction = {
                 --     name = "Kick",
                 --     icon = "icon16/disconnect.png",
                 --     command = "ulx kick",
+                --     prompt = true,
                 --     func = function(ply)
                 --         RunConsoleCommand("ulx", "kick", Target(ply))
                 --     end,
@@ -208,6 +210,7 @@ TTSB.RightClickFunction = {
                 --     name = "Ban",
                 --     icon = "icon16/delete.png"
                 --     command = "ulx ban",
+                --     prompt = true,
                 --     func = function(ply)
                 --         RunConsoleCommand("ulx", "ban", Target(ply))
                 --     end,
@@ -216,6 +219,7 @@ TTSB.RightClickFunction = {
                     name = "Slay",
                     icon = "icon16/bomb.png",
                     command = "ulx slay",
+                    prompt = true,
                     func = function(ply)
                         -- Don't need a ply:Alive() check here because the command handles that
                         RunConsoleCommand("ulx", "slay", Target(ply))
@@ -225,6 +229,7 @@ TTSB.RightClickFunction = {
                     name = "Respawn",
                     icon = "icon16/group_add.png",
                     command = "ulx respawn",
+                    prompt = true,
                     func = function(ply)
                         -- Don't need a ply:Alive() check here because the command handles that
                         RunConsoleCommand("ulx", "respawn", Target(ply))
@@ -233,6 +238,8 @@ TTSB.RightClickFunction = {
                 -- {
                 --     name = "Respawn TP",
                 --     icon = "icon16/group_link.png",
+                --     command = "ulx respawntp",
+                --     prompt = true,
                 --     func = function(ply)
                 --         RunConsoleCommand("ulx", "respawntp", Target(ply))
                 --     end,
@@ -283,6 +290,7 @@ TTSB.RightClickFunction = {
                     name = "Goto",
                     icon = "icon16/arrow_right.png",
                     command = "ulx goto",
+                    prompt = true,
                     func = function(ply)
                         RunConsoleCommand("ulx", "goto", Target(ply))
                     end,
@@ -291,6 +299,7 @@ TTSB.RightClickFunction = {
                     name = "Bring",
                     icon = "icon16/arrow_left.png",
                     command = "ulx bring",
+                    prompt = true,
                     func = function(ply)
                         RunConsoleCommand("ulx", "bring", Target(ply))
                     end,
