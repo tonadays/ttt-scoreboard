@@ -220,9 +220,6 @@ TTSB.RightClickFunction = {
                     icon = "icon16/bomb.png",
                     command = "ulx slay",
                     prompt = true,
-                    condition = function(ply)
-                        return ply:Alive()
-                    end,
                     func = function(ply)
                         RunConsoleCommand("ulx", "slay", Target(ply))
                     end,
@@ -232,9 +229,6 @@ TTSB.RightClickFunction = {
                     icon = "icon16/group_add.png",
                     command = "ulx respawn",
                     prompt = true,
-                    condition = function(ply)
-                        return not ply:Alive()
-                    end,
                     func = function(ply)
                         RunConsoleCommand("ulx", "respawn", Target(ply))
                     end,
