@@ -173,10 +173,11 @@ TTSB.RightClickFunction = {
             }
         },
         {
+            -- adding conditions to fspec/unspec could reveal info mid round
             admin = true,
             options = {
                 {
-                    name = "Force Spec",
+                    name = "Force Spectator",
                     icon = "icon16/status_away.png",
                     command = "ulx fspec",
                     func = function(ply)
@@ -215,6 +216,7 @@ TTSB.RightClickFunction = {
                 --         RunConsoleCommand("ulx", "ban", Target(ply))
                 --     end,
                 -- },
+                -- adding accurate conditions to slay/respawn is incredibly complicated and could accidentally reveal info mid round
                 {
                     name = "Slay",
                     icon = "icon16/bomb.png",
@@ -226,7 +228,7 @@ TTSB.RightClickFunction = {
                 },
                 {
                     name = "Respawn",
-                    icon = "icon16/group_add.png",
+                    icon = "icon16/user_add.png",
                     command = "ulx respawn",
                     prompt = true,
                     func = function(ply)
