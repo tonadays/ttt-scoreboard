@@ -589,8 +589,9 @@ function TTSB.AddMenu(menu)
                 if not IsValid(ply) then return end
                 if not IsValid(targetPly) then return end
                 if (option.prompt) then
+                    local label = option.name or option.command or "?"
                     Derma_Query(
-                        "Perform this action '" .. option.name or option.command or "?" .. "' on " .. ply:Nick() .. "?",
+                        "Perform this action '" .. label .. "' on " .. ply:Nick() .. "?",
                         "Confirmation Prompt",
                         "Yes", function() option.func(targetPly) end,
                         "No", function() end
