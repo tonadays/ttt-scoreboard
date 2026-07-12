@@ -571,6 +571,7 @@ function TTSB.AddMenu(menu)
             if not group.allowedGroups[playerGroup] then continue end
         end
         -- loop options
+        local empty = true
         for _, option in ipairs(group.options) do
             -- permission checks
             if (option.admin) then
@@ -601,8 +602,11 @@ function TTSB.AddMenu(menu)
             if (option.icon) then
                 menuOption:SetIcon(option.icon)
             end
+            empty = false
         end
-        menu:AddSpacer()
+        if not empty then
+            menu:AddSpacer()
+        end
     end
 
     hook.Add("Think", "TTSB_CheckInput", function()
