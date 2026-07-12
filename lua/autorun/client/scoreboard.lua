@@ -1,4 +1,5 @@
 TTSB = TTSB or {} -- terrortown scoreboard
+
 TTSB.Version = "1.0.0"
 TTSB.Ranks = {}
 
