@@ -93,12 +93,42 @@ TTSB.DynamicColors.rainbow = function(ply)
     return Color(red, green, blue)
 end
 
+--- Utility method for sanitized player targeting by name
+local function TargetNick(ply)
+    return ply:Nick():gsub(";", ""):gsub('"', "")
+end
+
+--- Utility method for sanitized player targeting
+---@param ply Player
+local function Target(ply)
+    local id = ply:SteamID()
+    if (id == "BOT" or id == "STEAM_ID_LAN") then
+        return TargetNick(ply)
+    else
+        return "$" .. id
+    end
+end
+
+---@class TTSB.RightClickOption
+---@field name string
+---@field icon string
+---@field admin? boolean if present, a player's TTSB rank must be specified as an admin rank
+---@field allowedGroups? table<string, boolean> if present, a player's ulx group must be set to true in this table
+---@field command? string if present, the player's permission will be checked with against this string using ULib.ucl.query()
+---@field func fun(ply: Player)
+
+---@class TTSB.RightClickGroup
+---@field admin? boolean if present, a player's TTSB rank must be specified as an admin rank
+---@field allowedGroups? table<string, boolean> if present, a player's ulx group must be set to true in this table
+---@field options TTSB.RightClickOption[]
+
+---@type { enabled: boolean, ask_admins: boolean, groups: TTSB.RightClickGroup[] }
 TTSB.RightClickFunction = {
     enabled = true,
     ask_admins = false,
     groups = {
         {
-            functions = {
+            options = {
                 {
                     name = "Show Profile",
                     func = function(ply)
@@ -107,28 +137,24 @@ TTSB.RightClickFunction = {
                     icon = "icon16/vcard.png"
                 },
                 {
-                    name = "Report Player",
-                    func = function(ply)
-                        LocalPlayer():ConCommand('say "!report ' .. ply:Nick():gsub(";", ""):gsub('"', "") .. '"')
-                    end,
-                    icon = "icon16/report.png"
-                },
-                {
                     admin = true,
                     name = "Print Friends",
                     icon = "icon16/group.png",
+                    command = "ulx friends",
                     func = function(ply)
-                        RunConsoleCommand("ulx", "friends", ply:Nick():gsub(";", ""))
-                    end,
+                        RunConsoleCommand("ulx", "friends", Target(ply))
+                    end
                 },
                 {
                     name = "Copy SteamID",
                     icon = "icon16/tag.png",
                     func = function(ply)
                         SetClipboardText(ply:SteamID())
-                        chat.AddText(color_white, ply:Nick() .. "'s SteamID (", Color(200, 200, 200), ply:SteamID(),
-                            color_white,
-                            ") copied to clipboard!")
+                        chat.AddText(
+                            color_white, ply:Nick() .. "'s SteamID (",
+                            Color(200, 200, 200), ply:SteamID(),
+                            color_white, ") copied to clipboard!"
+                        )
                     end,
                 },
                 {
@@ -136,129 +162,144 @@ TTSB.RightClickFunction = {
                     icon = "icon16/tag.png",
                     func = function(ply)
                         SetClipboardText(ply:SteamID64())
-                        chat.AddText(color_white, "Copied " .. ply:Nick() .. "'s SteamID64 (", Color(200, 200, 200),
-                            ply:SteamID64(), color_white, ") to clipboard!")
+                        chat.AddText(
+                            color_white, ply:Nick() .. "'s SteamID64 (",
+                            Color(200, 200, 200), ply:SteamID64(),
+                            color_white, ") copied to clipboard!"
+                        )
                     end,
                 },
             }
         },
         {
             admin = true,
-            functions = {
+            options = {
                 {
                     name = "Force Spec",
                     icon = "icon16/status_away.png",
+                    command = "ulx fspec",
                     func = function(ply)
-                        RunConsoleCommand("ulx", "fspec", ply:Nick():gsub(";", ""))
+                        RunConsoleCommand("ulx", "fspec", Target(ply))
                     end,
                 },
                 {
                     name = "Unspec",
                     icon = "icon16/status_online.png",
+                    command = "ulx unspec",
                     func = function(ply)
-                        RunConsoleCommand("ulx", "unspec", ply:Nick():gsub(";", ""))
+                        RunConsoleCommand("ulx", "unspec", Target(ply))
                     end,
                 },
             }
         },
         {
             admin = true,
-            functions = {
+            options = {
                 -- These are commented out for now because I want them to prompt the admin to set a reason
                 -- {
                 --     name = "Kick",
                 --     icon = "icon16/disconnect.png",
+                --     command = "ulx kick",
                 --     func = function(ply)
-                --         RunConsoleCommand("ulx", "kick", ply:Nick():gsub(";", ""))
+                --         RunConsoleCommand("ulx", "kick", Target(ply))
                 --     end,
                 -- },
                 -- {
                 --     name = "Ban",
-                --     func = function(ply)
-                --         RunConsoleCommand("ulx", "ban", ply:Nick():gsub(";", ""))
-                --     end,
                 --     icon = "icon16/delete.png"
+                --     command = "ulx ban",
+                --     func = function(ply)
+                --         RunConsoleCommand("ulx", "ban", Target(ply))
+                --     end,
                 -- },
                 {
                     name = "Slay",
                     icon = "icon16/bomb.png",
+                    command = "ulx slay",
                     func = function(ply)
                         -- Don't need a ply:Alive() check here because the command handles that
-                        RunConsoleCommand("ulx", "slay", ply:Nick():gsub(";", ""))
+                        RunConsoleCommand("ulx", "slay", Target(ply))
                     end,
                 },
                 {
                     name = "Respawn",
                     icon = "icon16/group_add.png",
+                    command = "ulx respawn",
                     func = function(ply)
                         -- Don't need a ply:Alive() check here because the command handles that
-                        RunConsoleCommand("ulx", "respawn", ply:Nick():gsub(";", ""))
+                        RunConsoleCommand("ulx", "respawn", Target(ply))
                     end,
                 },
                 -- {
                 --     name = "Respawn TP",
                 --     icon = "icon16/group_link.png",
                 --     func = function(ply)
-                --         RunConsoleCommand("ulx", "respawntp", ply:Nick():gsub(";", ""))
+                --         RunConsoleCommand("ulx", "respawntp", Target(ply))
                 --     end,
                 -- },
             }
         },
         {
             admin = true,
-            functions = {
+            options = {
                 {
                     name = "Mute",
                     icon = "icon16/keyboard_delete.png",
+                    command = "ulx mute",
                     func = function(ply)
-                        RunConsoleCommand("ulx", "mute", ply:Nick():gsub(";", ""))
+                        RunConsoleCommand("ulx", "mute", Target(ply))
                     end,
                 },
                 {
                     name = "Un-Mute",
                     icon = "icon16/keyboard_add.png",
+                    command = "ulx unmute",
                     func = function(ply)
-                        RunConsoleCommand("ulx", "unmute", ply:Nick():gsub(";", ""))
+                        RunConsoleCommand("ulx", "unmute", Target(ply))
                     end,
                 },
                 {
                     name = "Gag",
                     icon = "icon16/sound_mute.png",
+                    command = "ulx gag",
                     func = function(ply)
-                        RunConsoleCommand("ulx", "gag", ply:Nick():gsub(";", ""))
+                        RunConsoleCommand("ulx", "gag", Target(ply))
                     end,
                 },
                 {
                     name = "Un-Gag",
                     icon = "icon16/sound.png",
+                    command = "ulx ungag",
                     func = function(ply)
-                        RunConsoleCommand("ulx", "ungag", ply:Nick():gsub(";", ""))
+                        RunConsoleCommand("ulx", "ungag", Target(ply))
                     end,
                 },
             }
         },
         {
             admin = true,
-            functions = {
+            options = {
                 {
                     name = "Goto",
                     icon = "icon16/arrow_right.png",
+                    command = "ulx goto",
                     func = function(ply)
-                        RunConsoleCommand("ulx", "goto", ply:Nick():gsub(";", ""))
+                        RunConsoleCommand("ulx", "goto", Target(ply))
                     end,
                 },
                 {
                     name = "Bring",
                     icon = "icon16/arrow_left.png",
+                    command = "ulx bring",
                     func = function(ply)
-                        RunConsoleCommand("ulx", "bring", ply:Nick():gsub(";", ""))
+                        RunConsoleCommand("ulx", "bring", Target(ply))
                     end,
                 },
             }
         },
         -- {
         --     admin = true,
-        --     functions = {}
+        --     options = {}
         -- },
     }
 }
