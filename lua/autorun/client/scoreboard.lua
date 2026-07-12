@@ -116,6 +116,7 @@ end
 ---@field allowedGroups? table<string, boolean> if present, a player's ULX group must be set to true in this table
 ---@field command? string if present, the player's permission will be checked with against this string using ULib.ucl.query()
 ---@field prompt? boolean if present, prompts the user for confirmation when clicking this option
+---@field condition? fun(ply: Player): boolean if present, the option is only available when this function returns true
 ---@field func fun(ply: Player)
 
 ---@class TTSB.RightClickGroup
@@ -219,8 +220,10 @@ TTSB.RightClickFunction = {
                     icon = "icon16/bomb.png",
                     command = "ulx slay",
                     prompt = true,
+                    condition = function(ply)
+                        return ply:Alive()
+                    end,
                     func = function(ply)
-                        -- Don't need a ply:Alive() check here because the command handles that
                         RunConsoleCommand("ulx", "slay", Target(ply))
                     end,
                 },
@@ -229,8 +232,10 @@ TTSB.RightClickFunction = {
                     icon = "icon16/group_add.png",
                     command = "ulx respawn",
                     prompt = true,
+                    condition = function(ply)
+                        return not ply:Alive()
+                    end,
                     func = function(ply)
-                        -- Don't need a ply:Alive() check here because the command handles that
                         RunConsoleCommand("ulx", "respawn", Target(ply))
                     end,
                 },
@@ -252,6 +257,9 @@ TTSB.RightClickFunction = {
                     name = "Mute",
                     icon = "icon16/keyboard_delete.png",
                     command = "ulx mute",
+                    condition = function(ply)
+                        return not ply:GetNWBool("ulx_muted")
+                    end,
                     func = function(ply)
                         RunConsoleCommand("ulx", "mute", Target(ply))
                     end,
@@ -260,6 +268,9 @@ TTSB.RightClickFunction = {
                     name = "Un-Mute",
                     icon = "icon16/keyboard_add.png",
                     command = "ulx unmute",
+                    condition = function(ply)
+                        return ply:GetNWBool("ulx_muted")
+                    end,
                     func = function(ply)
                         RunConsoleCommand("ulx", "unmute", Target(ply))
                     end,
@@ -268,6 +279,9 @@ TTSB.RightClickFunction = {
                     name = "Gag",
                     icon = "icon16/sound_mute.png",
                     command = "ulx gag",
+                    condition = function(ply)
+                        return not ply:GetNWBool("ulx_gagged")
+                    end,
                     func = function(ply)
                         RunConsoleCommand("ulx", "gag", Target(ply))
                     end,
@@ -276,6 +290,9 @@ TTSB.RightClickFunction = {
                     name = "Un-Gag",
                     icon = "icon16/sound.png",
                     command = "ulx ungag",
+                    condition = function(ply)
+                        return ply:GetNWBool("ulx_gagged")
+                    end,
                     func = function(ply)
                         RunConsoleCommand("ulx", "ungag", Target(ply))
                     end,
@@ -583,6 +600,9 @@ function TTSB.AddMenu(menu)
             end
             if (option.command) then
                 if not ULib.ucl.query(ply, option.command) then continue end
+            end
+            if (option.condition) then
+                if not option.condition(targetPly) then continue end
             end
             -- add option
             local menuOption = menu:AddOption(option.name or "", function()
