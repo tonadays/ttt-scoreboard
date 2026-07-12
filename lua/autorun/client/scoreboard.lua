@@ -126,7 +126,6 @@ end
 ---@type { enabled: boolean, groups: TTSB.RightClickGroup[] }
 TTSB.RightClickFunction = {
     enabled = true,
-    ask_admins = false,
     groups = {
         {
             options = {
@@ -540,79 +539,80 @@ end
 
 hook.Add("TTTScoreboardColorForPlayer", "TTSB_NameColors", TTSB.AddNameColor)
 
--- function TTSB.AddMenu(menu)
---     local RCF = TTSB.RightClickFunction
---     if not RCF.enabled then return nil end
+---@class DMenu
+---@field Player Player not normal, added by ttt in terrortown/gamemode/vgui/sb_row.lua
 
---     local rank = TTSB.GetRank(LocalPlayer())
---     local ply = menu.Player
+---@class ULib
+---@field ucl ULib.ucl
 
---     for permission, funcs in pairs(RCF.functions) do
---         if permission == "Admin Menu" then
---             if not rank then continue end
---             if not rank.admin then continue end
---         end
+---@class ULib.ucl
+---@field query fun(ply: Player, access?: string, hide?: boolean): boolean
 
---         menu:AddSpacer()
---         local perm = menu:AddOption(permission)
---         perm.OnMousePressed = function() end
---         perm.OnMouseReleased = function() end
---         menu:AddSpacer()
+---@type ULib
+local ULib = ULib
 
---         for name, f in pairs(funcs) do
---             if name == "_icon" then
---                 perm:SetIcon(f)
---                 continue
---             end
+---@param menu DMenu
+function TTSB.AddMenu(menu)
+    local RCF = TTSB.RightClickFunction
+    if not RCF.enabled then return nil end
 
---             if istable(f) then
---                 if f.func then
---                     if istable(f.allowed) and not table.HasValue(f.allowed, LocalPlayer():GetUserGroup()) then continue end
---                     local option = menu:AddOption(name)
---                     option.DoClick = function()
---                         if not IsValid(ply) then return end
---                         if RCF.ask_admins then
---                             Derma_Query("Execute '" .. name .. "' on player " .. ply:Nick() .. "?", "Admin Command",
---                                 "Yes", function() f.func(ply) end,
---                                 "No", function() end)
---                         else
---                             f.func(ply)
---                         end
---                     end
---                     option:SetIcon(f.icon)
---                 else
---                     for n, d in pairs(f) do
---                         if istable(d.allowed) and not table.HasValue(d.allowed, LocalPlayer():GetUserGroup()) then continue end
+    local ply = LocalPlayer()
+    local playerRank = TTSB.GetRank(ply)
+    local playerGroup = ply:GetUserGroup()
+    local targetPly = menu.Player
 
---                         local option = menu:AddOption(n)
---                         option.DoClick = function()
---                             if not IsValid(ply) then return end
---                             if RCF.ask_admins then
---                                 Derma_Query("Execute '" .. n .. "' on player " .. ply:Nick() .. "?", "Admin Command",
---                                     "Yes", function() d.func(ply) end,
---                                     "No", function() end)
---                             else
---                                 d.func(ply)
---                             end
---                         end
---                         option:SetIcon(d.icon)
---                     end
---                     menu:AddSpacer()
---                 end
---             else
---                 menu:AddOption(name).DoClick = function() f(ply) end
---             end
---         end
---     end
+    for _, group in ipairs(TTSB.RightClickFunction.groups) do
+        -- permission checks
+        if (group.admin) then
+            if not playerRank then continue end
+            if not playerRank.admin then continue end
+        end
+        if (group.allowedGroups) then
+            if not group.allowedGroups[playerGroup] then continue end
+        end
+        -- loop options
+        for _, option in ipairs(group.options) do
+            -- permission checks
+            if (option.admin) then
+                if not playerRank then continue end
+                if not playerRank.admin then continue end
+            end
+            if (option.allowedGroups) then
+                if not option.allowedGroups[playerGroup] then continue end
+            end
+            if (option.command) then
+                if not ULib.ucl.query(ply, option.command) then continue end
+            end
+            -- add option
+            local menuOption = menu:AddOption(option.name or "", function()
+                if not IsValid(ply) then return end
+                if not IsValid(targetPly) then return end
+                if (option.prompt) then
+                    Derma_Query(
+                        "Perform this action '" .. option.name or option.command or "?" .. "' on " .. ply:Nick() .. "?",
+                        "Confirmation Prompt",
+                        "Yes", function() option.func(targetPly) end,
+                        "No", function() end
+                    )
+                else
+                    option.func(targetPly)
+                end
+            end)
+            if (option.icon) then
+                menuOption:SetIcon(option.icon)
+            end
+        end
+        menu:AddSpacer()
+    end
 
---     hook.Add("Think", "TTSB_CheckInput", function()
---         if not input.IsKeyDown(KEY_TAB) then
---             hook.Remove("Think", "TTSB_CheckInput")
---             menu:Remove()
---         end
---     end)
--- end
+    hook.Add("Think", "TTSB_CheckInput", function()
+        if not input.IsKeyDown(KEY_TAB) then
+            hook.Remove("Think", "TTSB_CheckInput")
+            menu:Remove()
+        end
+    end)
+end
 
--- hook.Add("TTTScoreboardMenu", "TTSB_Menu", TTSB.AddMenu)
+hook.Add("TTTScoreboardMenu", "TTSB_Menu", TTSB.AddMenu)
 
 concommand.Add("ttsb_refreshscoreboard", function() gamemode.Call("ScoreboardCreate") end)
