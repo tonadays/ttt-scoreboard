@@ -4,3 +4,4 @@ ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 .DS_Store
+lua/autorun/client/TTT_EasyScoreboard.lua
